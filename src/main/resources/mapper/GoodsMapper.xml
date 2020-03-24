@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.wangxuanpeng.mapper.GoodsMapper">
+  	<select id="findGoods" parameterType="map" resultType="com.wangxuanpeng.beans.Goods">
+  	
+  		SELECT goods.*,t.`tname` FROM goods JOIN t_type t ON goods.`tid`=t.`tid` 
+  		
+  		<where>
+  			<if test="gname!=null and gname!=''">
+  			gname like "%${gname}%"
+  		</if>
+  		</where>
+  	
+  	</select>
+  
+  <select id="findOne" parameterType="int" resultType="com.wangxuanpeng.beans.Goods">
+  
+  	SELECT goods.*,t.`tname` FROM goods JOIN t_type t ON goods.`tid`=t.`tid` where gid=#{0};
+  </select>
+  
+  <select id="findType" resultType="com.wangxuanpeng.beans.T_type">
+  
+  	select * from t_type
+  </select>
+  
+  <insert id="add" parameterType="com.wangxuanpeng.beans.Goods">
+  
+  	insert into goods
+  	(gname,tid,price) 
+  	values
+  	(#{gname},#{tid},#{price});
+  </insert>
+  
+  <update id="update" parameterType="com.wangxuanpeng.beans.Goods">
+  
+  	update goods set gname=#{gname},datea=#{datea},tid=#{tid} where gid=#{gid}
+  
+  
+  </update>
+  
+  <!-- 删除    -->
+  	<update id="deleteAll" parameterType="map">
+  	
+  	
+  		update goods set STATUS =1
+  		
+  		<where>
+  			<foreach collection="ids" open="gid in (" close=")" separator="," item="gid">
+  			
+  				${gid}
+  			</foreach>
+  		
+  		
+  		</where>
+  	
+  	
+  	
+  	
+  	</update>
+  
+  </mapper>
